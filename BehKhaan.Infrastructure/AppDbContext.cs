@@ -20,8 +20,6 @@ namespace BehKhaan.Infrastructure
             modelBuilder.Entity<Book>().HasKey(b => b.Id);
             modelBuilder.Entity<Book>().Property(b => b.Name).HasMaxLength(50);
 
-            modelBuilder.Entity<Book>().Property(e => e.Name).IsUnicode(false);
-
             // User
             modelBuilder.Entity<User>().HasKey(u => u.Id);
             modelBuilder.Entity<User>().Property(u => u.UserName).HasMaxLength(50);
