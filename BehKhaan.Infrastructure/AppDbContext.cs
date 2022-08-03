@@ -44,6 +44,5 @@ namespace BehKhaan.Infrastructure
         public DbSet<User> Users { get; set; }
         public DbSet<Shelf> Shelfs { get; set; }
         public DbSet<Book_Shelf> Books_Shelfs { get; set; }
-
     }
 }

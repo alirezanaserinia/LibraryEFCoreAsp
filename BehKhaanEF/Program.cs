@@ -29,4 +29,7 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 
+// Seed database
+AppDbInitializer.Seed(app);
+
 app.Run();
