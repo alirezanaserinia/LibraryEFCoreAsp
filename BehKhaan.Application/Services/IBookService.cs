@@ -11,6 +11,9 @@ namespace BehKhaan.Application.Services
     public interface IBookService
     {
         public IEnumerable<Book> GetBooks();
-        public void InsertBook(InsertBookModel bookModel);
+        public Book GetBookById(string id);
+        public void InsertBook(BookModel bookModel);
+        public void EditBook(string id ,BookModel bookModel);
+        public void RemoveBook(string id);
     }
 }

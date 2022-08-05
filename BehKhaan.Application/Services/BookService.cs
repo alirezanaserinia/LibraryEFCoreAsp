@@ -18,12 +18,33 @@ namespace BehKhaan.Application.Services
             _bookRepository = bookRepository;
         }
 
+        public void EditBook(string id ,BookModel bookModel)
+        {
+            var book = _bookRepository.GetById(id);
+            if (book != null)
+            {
+                book.ISBN = bookModel.ISBN;
+                book.Name = bookModel.Name;
+                book.Description = bookModel.Description;
+                book.ImageURL = bookModel.ImageURL;
+                book.Price = bookModel.Price;
+                book.Rate = bookModel.Rate;
+
+                _bookRepository.Edit(book);
+            }
+        }
+
+        public Book GetBookById(string id)
+        {
+            return _bookRepository.GetById(id);
+        }
+
         public IEnumerable<Book> GetBooks()
         {
             return _bookRepository.GetAll();
         }
 
-        public void InsertBook(InsertBookModel bookModel)
+        public void InsertBook(BookModel bookModel)
         {
             Book book = new Book()
             {
@@ -35,9 +56,12 @@ namespace BehKhaan.Application.Services
                 Price = bookModel.Price,
                 Rate = bookModel.Rate
             };
-
             _bookRepository.Insert(book);
         }
 
+        public void RemoveBook(string id)
+        {
+            _bookRepository.Remove(id);
+        }
     }
 }

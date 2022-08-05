@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BehKhaanWebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class BookController : ControllerBase
     {
@@ -16,7 +16,7 @@ namespace BehKhaanWebAPI.Controllers
             _bookService = bookService;
         }
 
-        [HttpGet]
+        [HttpGet("get-all-books")]
         public IActionResult GetBooks()
         {
             var books = _bookService.GetBooks();
@@ -27,8 +27,19 @@ namespace BehKhaanWebAPI.Controllers
             return Ok(books);
         }
 
-        [HttpPost]
-        public IActionResult InsertBook(InsertBookModel bookModel)
+        [HttpGet("get-book-by-id/{id}")]
+        public IActionResult GetBookById(string id)
+        {
+            var book = _bookService.GetBookById(id);
+            if (book == null)
+            {
+                return NotFound();
+            }
+            return Ok(book);
+        }
+
+        [HttpPost("add-book")]
+        public IActionResult InsertBook(BookModel bookModel)
         {
             if (!ModelState.IsValid)
             {
@@ -38,6 +49,36 @@ namespace BehKhaanWebAPI.Controllers
             return Ok();
         }
 
+        [HttpPut("update-book-by-id/{id}")]
+        public IActionResult EditBook(string id ,BookModel bookModel)
+        {
+            var book = _bookService.GetBookById(id);
+            if (book == null)
+            {
+                return NotFound();
+            }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            _bookService.EditBook(id, bookModel);
+            return Ok();
+        }
 
+        [HttpDelete("delete-book-by-id/{id}")]
+        public IActionResult RemoveBook(string id)
+        {
+            var book = _bookService.GetBookById(id);
+            if (book == null)
+            {
+                return NotFound();
+            }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            _bookService.RemoveBook(id);
+            return Ok();
+        }
     }
 }

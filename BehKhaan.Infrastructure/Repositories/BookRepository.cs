@@ -20,7 +20,7 @@ namespace BehKhaan.Infrastructure.Repositories
 
         public void Edit(Book entity)
         {
-            EntityEntry entityEntry = _context.Entry<Book>(entity);
+            EntityEntry entityEntry = _context.Entry(entity);
             entityEntry.State = EntityState.Modified;
             _context.SaveChanges();
         }

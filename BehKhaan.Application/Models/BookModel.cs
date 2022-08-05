@@ -1,6 +1,6 @@
 ﻿namespace BehKhaan.Application.Models
 {
-    public class InsertBookModel
+    public class BookModel
     {
         public string ISBN { get; set; }
         public string Name { get; set; }
