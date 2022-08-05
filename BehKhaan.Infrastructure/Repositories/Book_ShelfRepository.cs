@@ -27,7 +27,7 @@ namespace BehKhaan.Infrastructure.Repositories
 
         public IEnumerable<Book_Shelf> GetAll() => _context.Books_Shelfs.ToList();
 
-        public Book_Shelf GetById(string bookId, string shelfId) => _context.Books_Shelfs.FirstOrDefault(bs => bs.Id == id);
+        public Book_Shelf GetById(string bookId, string shelfId) => _context.Books_Shelfs.FirstOrDefault(bs => bs.BookId == bookId && bs.ShelfId==shelfId);
 
         public void Insert(Book_Shelf entity)
         {
@@ -37,7 +37,7 @@ namespace BehKhaan.Infrastructure.Repositories
 
         public void Remove(string bookId, string shelfId)
         {
-            var entity = _context.Books_Shelfs.FirstOrDefault(bs => bs.Id == id);
+            var entity = _context.Books_Shelfs.FirstOrDefault(bs => bs.BookId == bookId && bs.ShelfId == shelfId);
             EntityEntry entityEntry = _context.Entry<Book_Shelf>(entity);
             entityEntry.State = EntityState.Deleted;
             _context.SaveChanges();

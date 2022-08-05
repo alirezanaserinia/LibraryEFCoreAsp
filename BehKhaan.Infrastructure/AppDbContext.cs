@@ -32,9 +32,7 @@ namespace BehKhaan.Infrastructure
 
             // Book_Shelf
             modelBuilder.Entity<Book_Shelf>().HasKey(bs => new {bs.BookId, bs.ShelfId});
-
             modelBuilder.Entity<Book_Shelf>().HasOne(bs => bs.Book).WithMany(b => b.Books_Shelfs).HasForeignKey(bs => bs.BookId);
-
             modelBuilder.Entity<Book_Shelf>().HasOne(bs => bs.Shelf).WithMany(s => s.Books_Shelfs).HasForeignKey(bs => bs.ShelfId);
 
             base.OnModelCreating(modelBuilder);

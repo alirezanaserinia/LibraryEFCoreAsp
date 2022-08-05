@@ -82,7 +82,7 @@ namespace BehKhaan.Infrastructure
                             ImageURL = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvKtgOWy8yobNDsb3Jjd8h3lNmReqzARyrdQ&usqp=CAU",
                             Price = 99000,
                             Rate = 3
-                        },
+                        }
                     }
                     );
                     context.SaveChanges();
@@ -159,7 +159,6 @@ namespace BehKhaan.Infrastructure
                     );
                     context.SaveChanges();
                 }
-
             }
         }
     }
