@@ -1,4 +1,5 @@
-﻿using BehKhaan.Application.Services;
+﻿using BehKhaan.Application.Interfaces;
+using BehKhaan.Application.Services;
 using BehKhaan.Domain.IRepositories;
 using BehKhaan.Infrastructure.Repositories;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,7 +19,7 @@ namespace BehKhaan.Application
         public static void AddApplicationServices(this IServiceCollection services)
         {
             services.AddScoped<IBookService, BookService>();
-
+            services.AddScoped<IUserService, UserService>();
         }
     }
 }

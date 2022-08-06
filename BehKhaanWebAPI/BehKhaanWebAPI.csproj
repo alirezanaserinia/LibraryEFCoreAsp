@@ -16,7 +16,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BehKhaan.Application\BehKhaan.Application.csproj" />
-    <ProjectReference Include="..\BehKhaan.Infrastructure\BehKhaan.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

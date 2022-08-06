@@ -1,4 +1,5 @@
-﻿using BehKhaan.Application.Models;
+﻿using BehKhaan.Application.Interfaces;
+using BehKhaan.Application.Models;
 using BehKhaan.Domain.Entities;
 using BehKhaan.Domain.IRepositories;
 using System;

@@ -1,5 +1,5 @@
-﻿using BehKhaan.Application.Models;
-using BehKhaan.Application.Services;
+﻿using BehKhaan.Application.Interfaces;
+using BehKhaan.Application.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

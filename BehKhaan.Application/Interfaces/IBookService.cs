@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BehKhaan.Application.Services
+namespace BehKhaan.Application.Interfaces
 {
     public interface IBookService
     {
