@@ -10,6 +10,7 @@ namespace BehKhaan.Domain.IRepositories
     public interface IBook_ShelfRepository
     {
         public IEnumerable<Book_Shelf> GetAll();
+        public Book_Shelf GetByBookIdAndShelfId(string bookId, string shelfId);
         public IEnumerable<Book_Shelf> GetBook_ShelfsByShelfId(string shelfId);
         public IEnumerable<Book_Shelf> GetBook_ShelfsByBookId(string bookId);
         public void Insert(Book_Shelf entity);

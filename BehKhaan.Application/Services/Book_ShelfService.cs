@@ -13,10 +13,15 @@ namespace BehKhaan.Application.Services
     public class Book_ShelfService : IBook_ShelfService
     {
         private readonly IBook_ShelfRepository _book_ShelfRepository;
+        private readonly IBookRepository _bookRepository;
+        private readonly IShelfRepository _shelfRepository;
 
-        public Book_ShelfService(IBook_ShelfRepository book_ShelfRepository)
+        public Book_ShelfService(IBook_ShelfRepository book_ShelfRepository, IBookRepository bookRepository, 
+            IShelfRepository shelfRepository)
         {
             _book_ShelfRepository = book_ShelfRepository;
+            _bookRepository = bookRepository;
+            _shelfRepository = shelfRepository;
         }
 
         public void AddBookToShelf(Book_ShelfModel book_ShelfModel)
@@ -54,6 +59,11 @@ namespace BehKhaan.Application.Services
             };
 
             return bookWithShelfs;
+        }
+
+        public Book_Shelf GetByBookIdAndShelfId(string bookId, string shelfId)
+        {
+            return _book_ShelfRepository.GetByBookIdAndShelfId(bookId, shelfId);
         }
 
         public ShelfWithBooksModel GetShelfWithBooksByShelfId(string shelfId)
