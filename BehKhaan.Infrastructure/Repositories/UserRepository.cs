@@ -42,5 +42,6 @@ namespace BehKhaan.Infrastructure.Repositories
             entityEntry.State = EntityState.Deleted;
             _context.SaveChanges();
         }
+
     }
 }

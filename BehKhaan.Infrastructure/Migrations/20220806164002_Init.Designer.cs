@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BehKhaan.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220803103107_Initial")]
-    partial class Initial
+    [Migration("20220806164002_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -122,13 +122,13 @@ namespace BehKhaan.Infrastructure.Migrations
             modelBuilder.Entity("BehKhaan.Domain.Entities.Book_Shelf", b =>
                 {
                     b.HasOne("BehKhaan.Domain.Entities.Book", "Book")
-                        .WithMany("Books_Shelfs")
+                        .WithMany()
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BehKhaan.Domain.Entities.Shelf", "Shelf")
-                        .WithMany("Books_Shelfs")
+                        .WithMany()
                         .HasForeignKey("ShelfId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -147,16 +147,6 @@ namespace BehKhaan.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("BehKhaan.Domain.Entities.Book", b =>
-                {
-                    b.Navigation("Books_Shelfs");
-                });
-
-            modelBuilder.Entity("BehKhaan.Domain.Entities.Shelf", b =>
-                {
-                    b.Navigation("Books_Shelfs");
                 });
 
             modelBuilder.Entity("BehKhaan.Domain.Entities.User", b =>

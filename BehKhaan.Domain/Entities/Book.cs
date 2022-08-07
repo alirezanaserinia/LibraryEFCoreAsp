@@ -17,7 +17,5 @@ namespace BehKhaan.Domain.Entities
         public int Price { get; set; }
         public int Rate { get; set; }
 
-        //Relationships
-        public List<Book_Shelf> Books_Shelfs { get; set; }
     }
 }

@@ -28,12 +28,16 @@ namespace BehKhaan.Infrastructure
             // Shelf
             modelBuilder.Entity<Shelf>().HasKey(s => s.Id);
             modelBuilder.Entity<Shelf>().Property(s => s.Name).HasMaxLength(50);
-            modelBuilder.Entity<Shelf>().HasOne(s => s.User).WithMany(u => u.Shelfs).HasForeignKey(s => s.UserId);
+            modelBuilder.Entity<Shelf>().HasOne(s => s.User).WithMany().HasForeignKey(s => s.UserId);
+            modelBuilder.Entity<Shelf>().Navigation(s => s.User).AutoInclude();
+
 
             // Book_Shelf
             modelBuilder.Entity<Book_Shelf>().HasKey(bs => new {bs.BookId, bs.ShelfId});
-            modelBuilder.Entity<Book_Shelf>().HasOne(bs => bs.Book).WithMany(b => b.Books_Shelfs).HasForeignKey(bs => bs.BookId);
-            modelBuilder.Entity<Book_Shelf>().HasOne(bs => bs.Shelf).WithMany(s => s.Books_Shelfs).HasForeignKey(bs => bs.ShelfId);
+            modelBuilder.Entity<Book_Shelf>().HasOne(bs => bs.Book).WithMany().HasForeignKey(bs => bs.BookId);
+            modelBuilder.Entity<Book_Shelf>().HasOne(bs => bs.Shelf).WithMany().HasForeignKey(bs => bs.ShelfId);
+            modelBuilder.Entity<Book_Shelf>().Navigation(bs => bs.Book).AutoInclude();
+            modelBuilder.Entity<Book_Shelf>().Navigation(bs => bs.Shelf).AutoInclude();
 
             base.OnModelCreating(modelBuilder);
         }

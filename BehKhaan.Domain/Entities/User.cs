@@ -12,8 +12,5 @@ namespace BehKhaan.Domain.Entities
         public string Id { get; set; }
         public string UserName { get; set; }
         public string FullName { get; set; }
-
-        //Relationships
-        public List<Shelf> Shelfs { get; set; }
     }
 }

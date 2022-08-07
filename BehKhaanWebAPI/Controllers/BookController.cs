@@ -10,10 +10,12 @@ namespace BehKhaanWebAPI.Controllers
     public class BookController : ControllerBase
     {
         private readonly IBookService _bookService;
+        private readonly IBook_ShelfService _book_ShelfService;
 
-        public BookController(IBookService bookService)
+        public BookController(IBookService bookService, IBook_ShelfService book_ShelfService)
         {
             _bookService = bookService;
+            _book_ShelfService = book_ShelfService;
         }
 
         [HttpGet("get-all-books")]
@@ -79,6 +81,22 @@ namespace BehKhaanWebAPI.Controllers
             }
             _bookService.RemoveBook(id);
             return Ok();
+        }
+
+        [HttpGet("get-shelfs-of-book/id")]
+        public IActionResult GetShelfsOfBook(string id)
+        {
+            var book = _bookService.GetBookById(id);
+            if (book == null)
+            {
+                return NotFound();
+            }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var bookWithShelfs = _book_ShelfService.GetBookWithShelfsByBookId(id);
+            return Ok(bookWithShelfs);
         }
     }
 }

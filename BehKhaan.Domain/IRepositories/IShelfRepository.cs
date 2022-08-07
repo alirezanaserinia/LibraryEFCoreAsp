@@ -14,5 +14,6 @@ namespace BehKhaan.Domain.IRepositories
         public void Insert(Shelf entity);
         public void Edit(Shelf entity);
         public void Remove(string id);
+        public IEnumerable<Shelf> GetShelfsByUserId(string userId);
     }
 }

@@ -27,17 +27,6 @@ namespace BehKhaanWebAPI.Controllers
             return Ok(users);
         }
 
-        [HttpGet("get-user-by-id/{id}")]
-        public IActionResult GetUserById(string id)
-        {
-            var user = _userService.GetUserById(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-            return Ok(user);
-        }
-
         [HttpPost("add-user")]
         public IActionResult InsertUser(UserModel userModel)
         {
@@ -79,6 +68,23 @@ namespace BehKhaanWebAPI.Controllers
             }
             _userService.RemoveUser(id);
             return Ok();
+        }
+
+
+        [HttpGet("get-shelfs-of-user/id")]
+        public IActionResult GetShelfsOfUser(string id)
+        {
+            var user = _userService.GetUserById(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var userWithShelfs = _userService.GetUserWithShelfsByUserId(id);
+            return Ok(userWithShelfs);
         }
 
     }

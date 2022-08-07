@@ -15,5 +15,6 @@ namespace BehKhaan.Application.Interfaces
         public void InsertUser(UserModel bookModel);
         public void EditUser(string id, UserModel bookModel);
         public void RemoveUser(string id);
+        public UserWithShelfsModel GetUserWithShelfsByUserId(string userId);
     }
 }

@@ -20,6 +20,8 @@ namespace BehKhaan.Application
         {
             services.AddScoped<IBookService, BookService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IShelfService, ShelfService>();
+            services.AddScoped<IBook_ShelfService, Book_ShelfService>();
         }
     }
 }

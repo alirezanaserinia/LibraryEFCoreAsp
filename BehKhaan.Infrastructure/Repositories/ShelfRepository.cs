@@ -43,5 +43,10 @@ namespace BehKhaan.Infrastructure.Repositories
             entityEntry.State = EntityState.Deleted;
             _context.SaveChanges();
         }
+
+        public IEnumerable<Shelf> GetShelfsByUserId(string userId)
+        {
+            return _context.Shelfs.Where(n => n.UserId == userId).ToList();
+        }
     }
 }

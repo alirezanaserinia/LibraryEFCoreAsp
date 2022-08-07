@@ -13,10 +13,12 @@ namespace BehKhaan.Application.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IShelfRepository _shelfRepository;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(IUserRepository userRepository, IShelfRepository shelfRepository)
         {
             _userRepository = userRepository;
+            _shelfRepository = shelfRepository;
         }
 
         public void EditUser(string id, UserModel userModel)
@@ -55,6 +57,29 @@ namespace BehKhaan.Application.Services
         public void RemoveUser(string id)
         {
             _userRepository.Remove(id);
+        }
+
+
+        public UserWithShelfsModel GetUserWithShelfsByUserId(string userId)
+        {
+
+            var shelfs = _shelfRepository.GetShelfsByUserId(userId);
+
+            var user = shelfs.FirstOrDefault()?.User;
+
+            if (user == null)
+            {
+                return null;
+            }
+
+            var userWithShelfs = new UserWithShelfsModel()
+            {
+                UserName = user.UserName,
+                FullName = user.FullName,
+                ShelfNames = shelfs.Select(s => s.Name).ToList()
+            };
+
+            return userWithShelfs;
         }
     }
 }
