@@ -16,6 +16,5 @@ namespace BehKhaan.Domain.Entities
         public string ImageURL { get; set; }
         public int Price { get; set; }
         public int Rate { get; set; }
-
     }
 }

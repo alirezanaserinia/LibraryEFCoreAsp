@@ -98,5 +98,16 @@ namespace BehKhaanWebAPI.Controllers
             var shelfWithBooks = _book_ShelfService.GetShelfWithBooksByShelfId(id);
             return Ok(shelfWithBooks);
         }
+
+        [HttpPost("add-book-to-shelf")]
+        public IActionResult AddBookToShelf(Book_ShelfModel book_ShelfModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            _book_ShelfService.AddBookToShelf(book_ShelfModel);
+            return Ok();
+        }
     }
 }

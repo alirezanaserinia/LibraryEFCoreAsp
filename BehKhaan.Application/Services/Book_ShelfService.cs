@@ -13,12 +13,10 @@ namespace BehKhaan.Application.Services
     public class Book_ShelfService : IBook_ShelfService
     {
         private readonly IBook_ShelfRepository _book_ShelfRepository;
-        private readonly IBookRepository _bookRepository;
 
-        public Book_ShelfService(IBook_ShelfRepository book_ShelfRepository, IBookRepository bookRepository)
+        public Book_ShelfService(IBook_ShelfRepository book_ShelfRepository)
         {
             _book_ShelfRepository = book_ShelfRepository;
-            _bookRepository = bookRepository;
         }
 
         public void AddBookToShelf(Book_ShelfModel book_ShelfModel)
