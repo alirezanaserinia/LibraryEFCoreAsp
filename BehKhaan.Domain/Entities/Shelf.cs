@@ -16,8 +16,5 @@ namespace BehKhaan.Domain.Entities
         // User
         public string UserId { get; set; }
         public User User { get; set; }
-
-        //Relationships
-        public List<Book_Shelf> Books_Shelfs { get; set; }
     }
 }

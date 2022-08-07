@@ -1,5 +1,7 @@
 ﻿using BehKhaan.Domain.Entities;
 using BehKhaan.Domain.IRepositories;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,29 +12,36 @@ namespace BehKhaan.Infrastructure.Repositories
 {
     public class UserRepository : IUserRepository
     {
+        private readonly AppDbContext _context;
+        public UserRepository(AppDbContext context)
+        {
+            _context = context;
+        }
+
         public void Edit(User entity)
         {
-            throw new NotImplementedException();
+            EntityEntry entityEntry = _context.Entry<User>(entity);
+            entityEntry.State = EntityState.Modified;
+            _context.SaveChanges();
         }
 
-        public IEnumerable<User> GetAll()
-        {
-            throw new NotImplementedException();
-        }
+        public IEnumerable<User> GetAll() => _context.Users.ToList();
 
-        public User GetById(string id)
-        {
-            throw new NotImplementedException();
-        }
+        public User GetById(string id) => _context.Users.FirstOrDefault(u => u.Id == id);
 
         public void Insert(User entity)
         {
-            throw new NotImplementedException();
+            _context.Users.Add(entity);
+            _context.SaveChanges();
         }
 
         public void Remove(string id)
         {
-            throw new NotImplementedException();
+            var entity = _context.Users.FirstOrDefault(u => u.Id == id);
+            EntityEntry entityEntry = _context.Entry<User>(entity);
+            entityEntry.State = EntityState.Deleted;
+            _context.SaveChanges();
         }
+
     }
 }
