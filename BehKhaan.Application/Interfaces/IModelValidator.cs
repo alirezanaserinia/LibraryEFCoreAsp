@@ -10,5 +10,6 @@ namespace BehKhaan.Application.Interfaces
     public interface IModelValidator
     {
         public ValidationModel CheckBook_ShelfModelValidation(Book_ShelfModel book_ShelfModel);
+        public ValidationModel CheckShelfModelValidation(ShelfModel shelfModel);
     }
 }

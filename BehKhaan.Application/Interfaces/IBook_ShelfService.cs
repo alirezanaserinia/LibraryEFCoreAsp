@@ -14,7 +14,7 @@ namespace BehKhaan.Application.Interfaces
         public Book_Shelf GetByBookIdAndShelfId(string bookId, string shelfId);
         public BookWithShelfsModel GetBookWithShelfsByBookId(string bookId);
         public ShelfWithBooksModel GetShelfWithBooksByShelfId(string shelfId);
-        
-        //public void Change
+        public void ChangeBookStudyState(Book_ShelfModel book_shelfModel);
+        public void RemoveBookFromShelf(string bookId, string shelfId);
     }
 }

@@ -14,13 +14,15 @@ namespace BehKhaan.Application.Services
         private readonly IBookRepository _bookRepository;
         private readonly IShelfRepository _shelfRepository;
         private readonly IBook_ShelfRepository _book_shelfRepository;
+        private readonly IUserRepository _userRepository;
 
         public ModelValidator(IBookRepository bookRepository, IShelfRepository shelfRepository,
-            IBook_ShelfRepository book_shelfRepository)
+            IBook_ShelfRepository book_shelfRepository, IUserRepository userRepository)
         {
             _bookRepository = bookRepository;
             _shelfRepository = shelfRepository;
             _book_shelfRepository = book_shelfRepository;
+            _userRepository = userRepository;
         }
 
         public ValidationModel CheckBook_ShelfModelValidation(Book_ShelfModel book_ShelfModel)
@@ -63,7 +65,25 @@ namespace BehKhaan.Application.Services
             }
         }
 
-
-
+        public ValidationModel CheckShelfModelValidation(ShelfModel shelfModel)
+        {
+            var user = _userRepository.GetById(shelfModel.UserId);
+            if (user == null)
+            {
+                return new ValidationModel()
+                {
+                    Success = false,
+                    Message = "User not found!"
+                };
+            }
+            else
+            {
+                return new ValidationModel()
+                {
+                    Success = true,
+                    Message = "ShelfModel is valid"
+                };
+            }
+        }
     }
 }

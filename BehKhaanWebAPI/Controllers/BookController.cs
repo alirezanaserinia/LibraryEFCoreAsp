@@ -9,11 +9,13 @@ namespace BehKhaanWebAPI.Controllers
     [ApiController]
     public class BookController : ControllerBase
     {
+        private readonly IModelValidator _validator;
         private readonly IBookService _bookService;
         private readonly IBook_ShelfService _book_ShelfService;
 
-        public BookController(IBookService bookService, IBook_ShelfService book_ShelfService)
+        public BookController(IModelValidator validator, IBookService bookService, IBook_ShelfService book_ShelfService)
         {
+            _validator = validator;
             _bookService = bookService;
             _book_ShelfService = book_ShelfService;
         }
@@ -29,10 +31,10 @@ namespace BehKhaanWebAPI.Controllers
             return Ok(books);
         }
 
-        [HttpGet("get-book-by-id/{id}")]
-        public IActionResult GetBookById(string id)
+        [HttpGet("get-book-by-id/{booId}")]
+        public IActionResult GetBookById(string booId)
         {
-            var book = _bookService.GetBookById(id);
+            var book = _bookService.GetBookById(booId);
             if (book == null)
             {
                 return NotFound();
@@ -40,13 +42,11 @@ namespace BehKhaanWebAPI.Controllers
             return Ok(book);
         }
 
-        [HttpPost("add-book")]
+        [HttpPost("insert-book")]
         public IActionResult InsertBook(BookModel bookModel)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            
+
             _bookService.InsertBook(bookModel);
             return Ok();
         }
@@ -97,6 +97,23 @@ namespace BehKhaanWebAPI.Controllers
             }
             var bookWithShelfs = _book_ShelfService.GetBookWithShelfsByBookId(id);
             return Ok(bookWithShelfs);
+        }
+
+        [HttpPut("change-book-study-state")]
+        public IActionResult ChangeBookStudyState(Book_ShelfModel book_ShelfModel)
+        {
+            var validateResult = _validator.CheckBook_ShelfModelValidation(book_ShelfModel);
+            if (!validateResult.Success)
+            {
+                return BadRequest(validateResult.Message);
+            }
+            var book_Shelf = _book_ShelfService.GetByBookIdAndShelfId(book_ShelfModel.BookId, book_ShelfModel.ShelfId);
+            if (book_Shelf == null)
+            {
+                return NotFound();
+            }
+            _book_ShelfService.ChangeBookStudyState(book_ShelfModel);
+            return Ok();
         }
     }
 }

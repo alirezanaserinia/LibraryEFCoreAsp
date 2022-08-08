@@ -12,12 +12,15 @@ namespace BehKhaanWebAPI.Controllers
         private readonly IModelValidator _validator;
         private readonly IShelfService _shelfService;
         private readonly IBook_ShelfService _book_ShelfService;
+        private readonly IUserService _userService;
 
-        public ShelfController(IModelValidator validator, IShelfService shelfService, IBook_ShelfService book_ShelfService)
+        public ShelfController(IModelValidator validator, IShelfService shelfService, 
+            IBook_ShelfService book_ShelfService, IUserService userService)
         {
             _shelfService = shelfService;
             _book_ShelfService = book_ShelfService;
             _validator = validator;
+            _userService = userService;
         }
 
         [HttpGet("get-all-shelfs")]
@@ -31,10 +34,10 @@ namespace BehKhaanWebAPI.Controllers
             return Ok(shelfs);
         }
 
-        [HttpGet("get-shelf-by-id/{id}")]
-        public IActionResult GetShelfById(string id)
+        [HttpGet("get-shelf-by-id/{shelfId}")]
+        public IActionResult GetShelfById(string shelfId)
         {
-            var shelf = _shelfService.GetShelfById(id);
+            var shelf = _shelfService.GetShelfById(shelfId);
             if (shelf == null)
             {
                 return NotFound();
@@ -42,62 +45,58 @@ namespace BehKhaanWebAPI.Controllers
             return Ok(shelf);
         }
 
-        [HttpPost("add-shelf")]
-        public IActionResult InsertShelf(ShelfModel shelfModel)
+        [HttpPost("add-shelf-for-user")]
+        public IActionResult InsertShelfForUser(ShelfModel shelfModel)
         {
-            if (!ModelState.IsValid)
+            var validateResult = _validator.CheckShelfModelValidation(shelfModel);
+            if (!validateResult.Success)
             {
-                return BadRequest(ModelState);
+                return BadRequest(validateResult.Message);
             }
+            var userWithShelfs = _userService.GetUserWithShelfsByUserId(shelfModel.UserId);
+            bool isDuplicate = userWithShelfs.ShelfNames.Contains(shelfModel.Name);
+            if (isDuplicate)
+            {
+                return BadRequest("Duplicate insert!");
+            }
+
             _shelfService.InsertShelfForUser(shelfModel);
             return Ok();
         }
 
-        [HttpPut("update-shelf-by-id/{id}")]
-        public IActionResult EditShelf(string id, ShelfModel shelfModel)
+        [HttpPut("update-shelf-by-id/{shelfId}")]
+        public IActionResult EditShelf(string shelfId, string newShelfName)
         {
-            var shelf = _shelfService.GetShelfById(id);
+            var shelf = _shelfService.GetShelfById(shelfId);
             if (shelf == null)
             {
                 return NotFound();
             }
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            _shelfService.EditShelf(id, shelfModel);
+            _shelfService.EditShelf(shelfId, newShelfName);
             return Ok();
         }
 
-        [HttpDelete("delete-shelf-by-id/{id}")]
-        public IActionResult RemoveShelf(string id)
+        [HttpDelete("delete-shelf-by-id/{shelfId}")]
+        public IActionResult RemoveShelf(string shelfId)
         {
-            var shelf = _shelfService.GetShelfById(id);
+            var shelf = _shelfService.GetShelfById(shelfId);
             if (shelf == null)
             {
                 return NotFound();
             }
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            _shelfService.RemoveShelf(id);
+            _shelfService.RemoveShelf(shelfId);
             return Ok();
         }
 
-        [HttpGet("get-books-of-shelf/id")]
-        public IActionResult GetBooksOfShelf(string id)
+        [HttpGet("get-books-of-shelf/{shelfId}")]
+        public IActionResult GetBooksOfShelf(string shelfId)
         {
-            var shelf = _shelfService.GetShelfById(id);
+            var shelf = _shelfService.GetShelfById(shelfId);
             if (shelf == null)
             {
                 return NotFound();
             }
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            var shelfWithBooks = _book_ShelfService.GetShelfWithBooksByShelfId(id);
+            var shelfWithBooks = _book_ShelfService.GetShelfWithBooksByShelfId(shelfId);
             return Ok(shelfWithBooks);
         }
 
@@ -109,10 +108,6 @@ namespace BehKhaanWebAPI.Controllers
             {
                 return BadRequest(validateResult.Message);
             }
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
             var book_Shelf = _book_ShelfService.GetByBookIdAndShelfId(book_ShelfModel.BookId, book_ShelfModel.ShelfId);
             if (book_Shelf != null)
             {
@@ -120,7 +115,18 @@ namespace BehKhaanWebAPI.Controllers
             }
             _book_ShelfService.AddBookToShelf(book_ShelfModel);
             return Ok();
-            
+        }
+
+        [HttpDelete("remove-book-from-shelf")]
+        public IActionResult RemoveBookFromShelf(string bookId, string shelfId)
+        {
+            var book_Shelf = _book_ShelfService.GetByBookIdAndShelfId(bookId, shelfId);
+            if (book_Shelf == null)
+            {
+                return NotFound();
+            }
+            _book_ShelfService.RemoveBookFromShelf(bookId, shelfId);
+            return Ok();
         }
     }
 }

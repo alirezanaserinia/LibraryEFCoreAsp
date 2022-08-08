@@ -36,6 +36,16 @@ namespace BehKhaan.Application.Services
             _book_ShelfRepository.Insert(book_Shelf);
         }
 
+        public void ChangeBookStudyState(Book_ShelfModel book_shelfModel)
+        {
+            var book_Shelf = _book_ShelfRepository.GetByBookIdAndShelfId(book_shelfModel.BookId, book_shelfModel.ShelfId);
+            if (book_Shelf != null)
+            {
+                book_Shelf.StudyState = book_shelfModel.StudyState;
+                _book_ShelfRepository.Edit(book_Shelf);
+            }
+        }
+
         public BookWithShelfsModel GetBookWithShelfsByBookId(string bookId)
         {
             var book_Shelfs = _book_ShelfRepository.GetBook_ShelfsByBookId(bookId);
@@ -85,6 +95,11 @@ namespace BehKhaan.Application.Services
             };
 
             return shelfWithBooks;
+        }
+
+        public void RemoveBookFromShelf(string bookId, string shelfId)
+        {
+            _book_ShelfRepository.Remove(bookId, shelfId);
         }
     }
 }
