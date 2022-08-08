@@ -25,6 +25,27 @@ namespace BehKhaan.Application.Services
             _userRepository = userRepository;
         }
 
+        public ValidationModel CheckBookModelValidation(BookModel bookModel)
+        {
+            int bookRate = bookModel.Rate;
+            if (bookRate < 1 || bookRate > 5)
+            {
+                return new ValidationModel()
+                {
+                    Success = false,
+                    Message = "Rate of book can be between 1 and 5!"
+                };
+            }
+            else
+            {
+                return new ValidationModel()
+                {
+                    Success = true,
+                    Message = "BookModel is valid"
+                };
+            }
+        }
+
         public ValidationModel CheckBook_ShelfModelValidation(Book_ShelfModel book_ShelfModel)
         {
             var book = _bookRepository.GetById(book_ShelfModel.BookId);

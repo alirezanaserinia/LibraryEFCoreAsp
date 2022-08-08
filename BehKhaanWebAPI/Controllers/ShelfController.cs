@@ -57,7 +57,7 @@ namespace BehKhaanWebAPI.Controllers
             bool isDuplicate = userWithShelfs.ShelfNames.Contains(shelfModel.Name);
             if (isDuplicate)
             {
-                return BadRequest("Duplicate insert!");
+                return BadRequest("This shelf is already exists for " + userWithShelfs.FullName + "!");
             }
 
             _shelfService.InsertShelfForUser(shelfModel);
@@ -71,6 +71,12 @@ namespace BehKhaanWebAPI.Controllers
             if (shelf == null)
             {
                 return NotFound();
+            }
+            var userWithShelfs = _userService.GetUserWithShelfsByUserId(shelf.UserId);
+            bool isExists = userWithShelfs.ShelfNames.Contains(newShelfName);
+            if (isExists)
+            {
+                return BadRequest("This shelf is already exists for " + userWithShelfs.FullName + "!");
             }
             _shelfService.EditShelf(shelfId, newShelfName);
             return Ok();

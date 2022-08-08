@@ -45,57 +45,53 @@ namespace BehKhaanWebAPI.Controllers
         [HttpPost("insert-book")]
         public IActionResult InsertBook(BookModel bookModel)
         {
-            
-
+            var validateResult = _validator.CheckBookModelValidation(bookModel);
+            if (!validateResult.Success)
+            {
+                return BadRequest(validateResult.Message);
+            }
             _bookService.InsertBook(bookModel);
             return Ok();
         }
 
-        [HttpPut("update-book-by-id/{id}")]
-        public IActionResult EditBook(string id ,BookModel bookModel)
+        [HttpPut("update-book-by-id/{bookId}")]
+        public IActionResult EditBook(string bookId ,BookModel bookModel)
         {
-            var book = _bookService.GetBookById(id);
+            var validateResult = _validator.CheckBookModelValidation(bookModel);
+            if (!validateResult.Success)
+            {
+                return BadRequest(validateResult.Message);
+            }
+            var book = _bookService.GetBookById(bookId);
             if (book == null)
             {
                 return NotFound();
             }
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            _bookService.EditBook(id, bookModel);
+            _bookService.EditBook(bookId, bookModel);
             return Ok();
         }
 
-        [HttpDelete("delete-book-by-id/{id}")]
-        public IActionResult RemoveBook(string id)
+        [HttpDelete("delete-book-by-id/{bookId}")]
+        public IActionResult RemoveBook(string bookId)
         {
-            var book = _bookService.GetBookById(id);
+            var book = _bookService.GetBookById(bookId);
             if (book == null)
             {
                 return NotFound();
             }
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            _bookService.RemoveBook(id);
+            _bookService.RemoveBook(bookId);
             return Ok();
         }
 
-        [HttpGet("get-shelfs-of-book/id")]
-        public IActionResult GetShelfsOfBook(string id)
+        [HttpGet("get-shelfs-of-book/bookId")]
+        public IActionResult GetShelfsOfBook(string bookId)
         {
-            var book = _bookService.GetBookById(id);
+            var book = _bookService.GetBookById(bookId);
             if (book == null)
             {
                 return NotFound();
             }
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            var bookWithShelfs = _book_ShelfService.GetBookWithShelfsByBookId(id);
+            var bookWithShelfs = _book_ShelfService.GetBookWithShelfsByBookId(bookId);
             return Ok(bookWithShelfs);
         }
 

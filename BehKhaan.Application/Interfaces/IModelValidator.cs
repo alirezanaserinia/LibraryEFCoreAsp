@@ -11,5 +11,6 @@ namespace BehKhaan.Application.Interfaces
     {
         public ValidationModel CheckBook_ShelfModelValidation(Book_ShelfModel book_ShelfModel);
         public ValidationModel CheckShelfModelValidation(ShelfModel shelfModel);
+        public ValidationModel CheckBookModelValidation(BookModel bookModel);
     }
 }
