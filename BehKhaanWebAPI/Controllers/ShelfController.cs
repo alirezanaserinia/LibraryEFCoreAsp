@@ -72,11 +72,10 @@ namespace BehKhaanWebAPI.Controllers
             {
                 return NotFound();
             }
-            var userWithShelfs = _userService.GetUserWithShelfsByUserId(shelf.UserId);
-            bool isExists = userWithShelfs.ShelfNames.Contains(newShelfName);
-            if (isExists)
+            var validateResult = _validator.CheckShelfNameUniquenessForUser(shelf.UserId, newShelfName);
+            if (!validateResult.Success)
             {
-                return BadRequest("This shelf is already exists for " + userWithShelfs.FullName + "!");
+                return BadRequest(validateResult.Message);
             }
             _shelfService.EditShelf(shelfId, newShelfName);
             return Ok();

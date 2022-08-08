@@ -9,11 +9,13 @@ namespace BehKhaanWebAPI.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+        private readonly IModelValidator _validator;
         private readonly IUserService _userService;
 
-        public UserController(IUserService userService)
+        public UserController(IModelValidator validator, IUserService userService)
         {
             _userService = userService;
+            _validator = validator;
         }
 
         [HttpGet("get-all-users")]
@@ -27,65 +29,69 @@ namespace BehKhaanWebAPI.Controllers
             return Ok(users);
         }
 
-        [HttpPost("add-user")]
+        [HttpGet("get-user-by-id/{userId}")]
+        public IActionResult GetUserById(string userId)
+        {
+            var user = _userService.GetUserById(userId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return Ok(user);
+        }
+
+        [HttpPost("insert-user")]
         public IActionResult InsertUser(UserModel userModel)
         {
-            if (!ModelState.IsValid)
+            var validateResult = _validator.CheckUserNameUniqueness(userModel.UserName);
+            if (!validateResult.Success)
             {
-                return BadRequest(ModelState);
+                return BadRequest(validateResult.Message);
             }
             _userService.InsertUser(userModel);
             return Ok();
         }
 
-        [HttpPut("update-user-by-id/{id}")]
-        public IActionResult EditUser(string id, UserModel userModel)
+        [HttpPut("update-user-by-id/{userId}")]
+        public IActionResult EditUser(string userId, UserModel userModel)
         {
-            var user = _userService.GetUserById(id);
+            var user = _userService.GetUserById(userId);
             if (user == null)
             {
                 return NotFound();
             }
-            if (!ModelState.IsValid)
+            var validateResult = _validator.CheckUserNameUniqueness(userModel.UserName);
+            if (!validateResult.Success)
             {
-                return BadRequest(ModelState);
+                return BadRequest(validateResult.Message);
             }
-            _userService.EditUser(id, userModel);
+            _userService.EditUser(userId, userModel);
             return Ok();
         }
 
-        [HttpDelete("delete-user-by-id/{id}")]
-        public IActionResult RemoveUser(string id)
+        [HttpDelete("delete-user-by-id/{userId}")]
+        public IActionResult RemoveUser(string userId)
         {
-            var user = _userService.GetUserById(id);
+            var user = _userService.GetUserById(userId);
             if (user == null)
             {
                 return NotFound();
             }
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            _userService.RemoveUser(id);
+            _userService.RemoveUser(userId);
             return Ok();
         }
 
 
-        [HttpGet("get-shelfs-of-user/id")]
-        public IActionResult GetShelfsOfUser(string id)
+        [HttpGet("get-shelfs-of-user/userId")]
+        public IActionResult GetShelfsOfUser(string userId)
         {
-            var user = _userService.GetUserById(id);
+            var user = _userService.GetUserById(userId);
             if (user == null)
             {
                 return NotFound();
             }
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            var userWithShelfs = _userService.GetUserWithShelfsByUserId(id);
+            var userWithShelfs = _userService.GetUserWithShelfsByUserId(userId);
             return Ok(userWithShelfs);
         }
-
     }
 }

@@ -16,13 +16,16 @@ namespace BehKhaan.Application.Services
         private readonly IBook_ShelfRepository _book_shelfRepository;
         private readonly IUserRepository _userRepository;
 
+        private readonly IUserService _userService;
+
         public ModelValidator(IBookRepository bookRepository, IShelfRepository shelfRepository,
-            IBook_ShelfRepository book_shelfRepository, IUserRepository userRepository)
+            IBook_ShelfRepository book_shelfRepository, IUserRepository userRepository, IUserService userService)
         {
             _bookRepository = bookRepository;
             _shelfRepository = shelfRepository;
             _book_shelfRepository = book_shelfRepository;
             _userRepository = userRepository;
+            _userService = userService;
         }
 
         public ValidationModel CheckBookModelValidation(BookModel bookModel)
@@ -103,6 +106,49 @@ namespace BehKhaan.Application.Services
                 {
                     Success = true,
                     Message = "ShelfModel is valid"
+                };
+            }
+        }
+
+        public ValidationModel CheckShelfNameUniquenessForUser(string userId, string shelfName)
+        {
+            var userWithShelfs = _userService.GetUserWithShelfsByUserId(userId);
+            bool isExists = userWithShelfs.ShelfNames.Contains(shelfName);
+            if (isExists)
+            {
+                return new ValidationModel()
+                {
+                    Success = false,
+                    Message = "This shelfName is already exists for " + userWithShelfs.FullName + "!"
+                };
+            }
+            else
+            {
+                return new ValidationModel()
+                {
+                    Success = true,
+                    Message = "This shelfName is available"
+                };
+            }
+        }
+
+        public ValidationModel CheckUserNameUniqueness(string userName)
+        {
+            bool isUserNameExists = _userRepository.isUserNameExists(userName);
+            if (isUserNameExists)
+            {
+                return new ValidationModel()
+                {
+                    Success = false,
+                    Message = "This username is unavailable!"
+                };
+            }
+            else
+            {
+                return new ValidationModel()
+                {
+                    Success = true,
+                    Message = "This username is available"
                 };
             }
         }

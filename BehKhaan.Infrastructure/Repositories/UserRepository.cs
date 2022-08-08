@@ -35,6 +35,19 @@ namespace BehKhaan.Infrastructure.Repositories
             _context.SaveChanges();
         }
 
+        public bool isUserNameExists(string userName)
+        {
+            var userNames = _context.Users.Select(u => u.UserName);
+            if (userNames.Any())
+            {
+                return userNames.Contains(userName);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public void Remove(string id)
         {
             var entity = _context.Users.FirstOrDefault(u => u.Id == id);
