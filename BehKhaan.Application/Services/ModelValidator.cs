@@ -113,6 +113,14 @@ namespace BehKhaan.Application.Services
         public ValidationModel CheckShelfNameUniquenessForUser(string userId, string shelfName)
         {
             var userWithShelfs = _userService.GetUserWithShelfsByUserId(userId);
+            if (userWithShelfs == null)
+            {
+                return new ValidationModel()
+                {
+                    Success = true,
+                    Message = "This shelfName is available"
+                };
+            }
             bool isExists = userWithShelfs.ShelfNames.Contains(shelfName);
             if (isExists)
             {

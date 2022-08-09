@@ -93,5 +93,60 @@ namespace BehKhaanWebAPI.Controllers
             var userWithShelfs = _userService.GetUserWithShelfsByUserId(userId);
             return Ok(userWithShelfs);
         }
+
+        [HttpGet("get-number-of-books-for-users")]
+        public IActionResult GetNumOfBooksForUsers()
+        {
+            var usersWithNumOfBooks = _userService.GetNumOfBooksForUsers();
+            if (usersWithNumOfBooks == null)
+            {
+                return NotFound();
+            }
+            return Ok(usersWithNumOfBooks);
+        }
+
+        [HttpGet("get-number-of-read-books-for-users")]
+        public IActionResult GetNumOfReadBooksForUsers()
+        {
+            var usersWithNumOfReadBooks = _userService.GetNumOfReadBooksForUsers();
+            if (usersWithNumOfReadBooks == null)
+            {
+                return NotFound();
+            }
+            return Ok(usersWithNumOfReadBooks);
+        }
+
+        [HttpGet("get-users-study-state")]
+        public IActionResult GetUsersStudyState()
+        {
+            var usersStudyState = _userService.GetUsersStudyState();
+            if (usersStudyState == null)
+            {
+                return NotFound();
+            }
+            return Ok(usersStudyState);
+        }
+
+        [HttpGet("get-users-have-at-least-one-reading-book")]
+        public IActionResult UsersHaveAtLeastOneReadingBook()
+        {
+            var usersHaveAtLeastOneReadingBook = _userService.GetUsersHaveAtLeastOneReadingBook();
+            if (usersHaveAtLeastOneReadingBook == null)
+            {
+                return NotFound();
+            }
+            return Ok(usersHaveAtLeastOneReadingBook);
+        }
+
+        [HttpGet("get-ordred-list-of-users-based-on-books-read")]
+        public IActionResult GetOrderedListOfUsersBasedOnBooksRead()
+        {
+            var orderedListOfUsers = _userService.GetOrderedListOfUsersBasedOnBooksRead();
+            if (orderedListOfUsers == null)
+            {
+                return NotFound();
+            }
+            return Ok(orderedListOfUsers);
+        }
     }
 }

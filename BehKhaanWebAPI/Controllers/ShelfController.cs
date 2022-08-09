@@ -14,7 +14,7 @@ namespace BehKhaanWebAPI.Controllers
         private readonly IBook_ShelfService _book_ShelfService;
         private readonly IUserService _userService;
 
-        public ShelfController(IModelValidator validator, IShelfService shelfService, 
+        public ShelfController(IModelValidator validator, IShelfService shelfService,
             IBook_ShelfService book_ShelfService, IUserService userService)
         {
             _shelfService = shelfService;
@@ -48,18 +48,17 @@ namespace BehKhaanWebAPI.Controllers
         [HttpPost("add-shelf-for-user")]
         public IActionResult InsertShelfForUser(ShelfModel shelfModel)
         {
-            var validateResult = _validator.CheckShelfModelValidation(shelfModel);
-            if (!validateResult.Success)
+            var modelValidate = _validator.CheckShelfModelValidation(shelfModel);
+            if (!modelValidate.Success)
             {
-                return BadRequest(validateResult.Message);
+                return BadRequest(modelValidate.Message);
             }
-            var userWithShelfs = _userService.GetUserWithShelfsByUserId(shelfModel.UserId);
-            bool isDuplicate = userWithShelfs.ShelfNames.Contains(shelfModel.Name);
-            if (isDuplicate)
+            var shelfNameUniquenessValidateResult = _validator
+                .CheckShelfNameUniquenessForUser(shelfModel.UserId, shelfModel.Name);
+            if (!shelfNameUniquenessValidateResult.Success)
             {
-                return BadRequest("This shelf is already exists for " + userWithShelfs.FullName + "!");
+                return BadRequest(shelfNameUniquenessValidateResult.Message);
             }
-
             _shelfService.InsertShelfForUser(shelfModel);
             return Ok();
         }

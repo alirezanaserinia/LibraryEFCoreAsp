@@ -111,5 +111,16 @@ namespace BehKhaanWebAPI.Controllers
             _book_ShelfService.ChangeBookStudyState(book_ShelfModel);
             return Ok();
         }
+
+        [HttpGet("get-ordred-list-of-books-based-on-user-reception")]
+        public IActionResult GetOrderedListOfBooksBasedOnUserReception()
+        {
+            var orderedListOfBooks = _bookService.GetOrderedListOfBooksBasedOnUserReception();
+            if (orderedListOfBooks == null)
+            {
+                return NotFound();
+            }
+            return Ok(orderedListOfBooks);
+        }
     }
 }
