@@ -20,7 +20,7 @@ namespace BehKhaanWebAPI.Controllers
             _book_ShelfService = book_ShelfService;
         }
 
-        [HttpGet("get-all-books")]
+        [HttpGet("books")]
         public IActionResult GetBooks()
         {
             var books = _bookService.GetBooks();
@@ -31,10 +31,10 @@ namespace BehKhaanWebAPI.Controllers
             return Ok(books);
         }
 
-        [HttpGet("get-book-by-id/{booId}")]
-        public IActionResult GetBookById(string booId)
+        [HttpGet("books/{bookId}")]
+        public IActionResult GetBookById(string bookId)
         {
-            var book = _bookService.GetBookById(booId);
+            var book = _bookService.GetBookById(bookId);
             if (book == null)
             {
                 return NotFound();
@@ -42,7 +42,7 @@ namespace BehKhaanWebAPI.Controllers
             return Ok(book);
         }
 
-        [HttpPost("insert-book")]
+        [HttpPost("books/insert")]
         public IActionResult InsertBook(BookModel bookModel)
         {
             var validateResult = _validator.CheckBookModelValidation(bookModel);
@@ -54,7 +54,7 @@ namespace BehKhaanWebAPI.Controllers
             return Ok();
         }
 
-        [HttpPut("update-book-by-id/{bookId}")]
+        [HttpPut("books/{bookId}/update")]
         public IActionResult EditBook(string bookId ,BookModel bookModel)
         {
             var validateResult = _validator.CheckBookModelValidation(bookModel);
@@ -71,7 +71,7 @@ namespace BehKhaanWebAPI.Controllers
             return Ok();
         }
 
-        [HttpDelete("delete-book-by-id/{bookId}")]
+        [HttpDelete("books/{bookId}/delete")]
         public IActionResult RemoveBook(string bookId)
         {
             var book = _bookService.GetBookById(bookId);
@@ -83,7 +83,7 @@ namespace BehKhaanWebAPI.Controllers
             return Ok();
         }
 
-        [HttpGet("get-shelfs-of-book/bookId")]
+        [HttpGet("books/{bookId}/shelfs")]
         public IActionResult GetShelfsOfBook(string bookId)
         {
             var book = _bookService.GetBookById(bookId);
@@ -95,8 +95,8 @@ namespace BehKhaanWebAPI.Controllers
             return Ok(bookWithShelfs);
         }
 
-        [HttpPut("change-book-study-state")]
-        public IActionResult ChangeBookStudyState(Book_ShelfModel book_ShelfModel)
+        [HttpPut("")] // ??
+        public IActionResult ChangeBookStudyState([FromQuery] Book_ShelfModel book_ShelfModel)
         {
             var validateResult = _validator.CheckBook_ShelfModelValidation(book_ShelfModel);
             if (!validateResult.Success)
@@ -112,7 +112,7 @@ namespace BehKhaanWebAPI.Controllers
             return Ok();
         }
 
-        [HttpGet("get-ordred-list-of-books-based-on-user-reception")]
+        [HttpGet("books/mostpopular")]
         public IActionResult GetOrderedListOfBooksBasedOnUserReception()
         {
             var orderedListOfBooks = _bookService.GetOrderedListOfBooksBasedOnUserReception();

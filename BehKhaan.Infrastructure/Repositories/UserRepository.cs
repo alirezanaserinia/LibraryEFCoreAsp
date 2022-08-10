@@ -37,10 +37,11 @@ namespace BehKhaan.Infrastructure.Repositories
 
         public bool isUserNameExists(string userName)
         {
-            var userNames = _context.Users.Select(u => u.UserName);
-            if (userNames.Any())
+            var userNames = _context.Users.Select(u => u.UserName)
+                .Any();
+            if (userNames)
             {
-                return userNames.Contains(userName);
+                return _context.Users.Select(u => u.UserName).Contains(userName);
             }
             else
             {
