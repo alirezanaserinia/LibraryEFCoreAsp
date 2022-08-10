@@ -14,11 +14,14 @@ namespace BehKhaan.Application.Services
     {
         private readonly IBook_ShelfRepository _book_ShelfRepository;
         private readonly IBookRepository _bookRepository;
+        private readonly IShelfRepository _shelfRepository;
 
-        public Book_ShelfService(IBook_ShelfRepository book_ShelfRepository, IBookRepository bookRepository)
+        public Book_ShelfService(IBook_ShelfRepository book_ShelfRepository, IBookRepository bookRepository, 
+            IShelfRepository shelfRepository)
         {
             _book_ShelfRepository = book_ShelfRepository;
             _bookRepository = bookRepository;
+            _shelfRepository = shelfRepository;
         }
 
         public void AddBookToShelf(Book_ShelfModel book_ShelfModel)
@@ -31,6 +34,16 @@ namespace BehKhaan.Application.Services
                 PuttingTime = DateTime.Now
             };
             _book_ShelfRepository.Insert(book_Shelf);
+        }
+
+        public void ChangeBookStudyState(Book_ShelfModel book_shelfModel)
+        {
+            var book_Shelf = _book_ShelfRepository.GetByBookIdAndShelfId(book_shelfModel.BookId, book_shelfModel.ShelfId);
+            if (book_Shelf != null)
+            {
+                book_Shelf.StudyState = book_shelfModel.StudyState;
+                _book_ShelfRepository.Edit(book_Shelf);
+            }
         }
 
         public BookWithShelfsModel GetBookWithShelfsByBookId(string bookId)
@@ -58,6 +71,11 @@ namespace BehKhaan.Application.Services
             return bookWithShelfs;
         }
 
+        public Book_Shelf GetByBookIdAndShelfId(string bookId, string shelfId)
+        {
+            return _book_ShelfRepository.GetByBookIdAndShelfId(bookId, shelfId);
+        }
+
         public ShelfWithBooksModel GetShelfWithBooksByShelfId(string shelfId)
         {
             var book_Shelfs = _book_ShelfRepository.GetBook_ShelfsByShelfId(shelfId);
@@ -77,6 +95,11 @@ namespace BehKhaan.Application.Services
             };
 
             return shelfWithBooks;
+        }
+
+        public void RemoveBookFromShelf(string bookId, string shelfId)
+        {
+            _book_ShelfRepository.Remove(bookId, shelfId);
         }
     }
 }

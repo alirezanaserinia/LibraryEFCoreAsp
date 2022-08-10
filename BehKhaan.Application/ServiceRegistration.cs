@@ -22,6 +22,7 @@ namespace BehKhaan.Application
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IShelfService, ShelfService>();
             services.AddScoped<IBook_ShelfService, Book_ShelfService>();
+            services.AddScoped<IModelValidator, ModelValidator>();
         }
     }
 }

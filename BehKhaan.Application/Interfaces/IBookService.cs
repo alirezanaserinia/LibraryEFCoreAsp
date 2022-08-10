@@ -15,5 +15,6 @@ namespace BehKhaan.Application.Interfaces
         public void InsertBook(BookModel bookModel);
         public void EditBook(string id ,BookModel bookModel);
         public void RemoveBook(string id);
+        public IEnumerable<BookWithNumOfReadersModel> GetOrderedListOfBooksBasedOnUserReception();
     }
 }

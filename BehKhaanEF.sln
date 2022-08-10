@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BehKhaanWebAPI", "BehKhaanW
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Application", "2. Application", "{906299C3-619A-486D-A859-38DC2A7E0C1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BehKhaan.Application", "BehKhaan.Application\BehKhaan.Application.csproj", "{DBC693C4-2663-4052-9D32-E0EC9A216CD4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BehKhaan.Application", "BehKhaan.Application\BehKhaan.Application.csproj", "{DBC693C4-2663-4052-9D32-E0EC9A216CD4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

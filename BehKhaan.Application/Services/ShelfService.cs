@@ -18,13 +18,12 @@ namespace BehKhaan.Application.Services
             _shelfRepository = shelfRepository;
         }
 
-        public void EditShelf(string id, ShelfModel shelfModel)
+        public void EditShelf(string id, string newShelfName)
         {
             var shelf = _shelfRepository.GetById(id);
             if (shelf != null)
             {
-                shelf.Name = shelfModel.Name;
-
+                shelf.Name = newShelfName;
                 _shelfRepository.Edit(shelf);
             }
         }

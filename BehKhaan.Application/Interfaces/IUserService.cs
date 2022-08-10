@@ -16,5 +16,10 @@ namespace BehKhaan.Application.Interfaces
         public void EditUser(string id, UserModel bookModel);
         public void RemoveUser(string id);
         public UserWithShelfsModel GetUserWithShelfsByUserId(string userId);
+        public IEnumerable<UserWithCountOfBooks> GetNumOfBooksForUsers();
+        public IEnumerable<UserWithCountOfReadBooks> GetNumOfReadBooksForUsers();
+        public IEnumerable<UserStudyState> GetUsersStudyState();
+        public IEnumerable<UserModel> GetUsersHaveAtLeastOneReadingBook();
+        public IEnumerable<UserWithCountOfReadBooks> GetOrderedListOfUsersBasedOnBooksRead();
     }
 }

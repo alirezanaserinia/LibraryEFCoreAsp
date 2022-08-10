@@ -26,6 +26,11 @@ namespace BehKhaan.Infrastructure.Repositories
         }
 
         public IEnumerable<Book_Shelf> GetAll() => _context.Books_Shelfs.ToList();
+        
+        public Book_Shelf GetByBookIdAndShelfId(string bookId, string shelfId)
+        {
+            return _context.Books_Shelfs.Where(bs => bs.BookId == bookId && bs.ShelfId == shelfId).FirstOrDefault();
+        }
 
         public IEnumerable<Book_Shelf> GetBook_ShelfsByShelfId(string shelfId)
         {

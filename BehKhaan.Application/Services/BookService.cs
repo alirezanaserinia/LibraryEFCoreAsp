@@ -13,10 +13,12 @@ namespace BehKhaan.Application.Services
     public class BookService : IBookService
     {
         private readonly IBookRepository _bookRepository;
+        private readonly IBook_ShelfRepository _bookShelfRepository;
 
-        public BookService(IBookRepository bookRepository)
+        public BookService(IBookRepository bookRepository, IBook_ShelfRepository bookShelfRepository)
         {
             _bookRepository = bookRepository;
+            _bookShelfRepository = bookShelfRepository;
         }
 
         public void EditBook(string id ,BookModel bookModel)
@@ -43,6 +45,33 @@ namespace BehKhaan.Application.Services
         public IEnumerable<Book> GetBooks()
         {
             return _bookRepository.GetAll();
+        }
+
+        public IEnumerable<BookWithNumOfReadersModel> GetOrderedListOfBooksBasedOnUserReception()
+        {
+            List<BookWithNumOfReadersModel> booksList = new List<BookWithNumOfReadersModel>();
+            int NumOfReaders = 0;
+            var books = _bookRepository.GetAll();
+            foreach (var book in books)
+            {
+                var book_Shelfs = _bookShelfRepository.GetBook_ShelfsByBookId(book.Id);
+                NumOfReaders = 0;
+                foreach (var book_Shelf in book_Shelfs)
+                {
+                    if (book_Shelf.StudyState == 2)
+                    {
+                        NumOfReaders++;
+                    }
+                }
+                booksList.Add(
+                    new BookWithNumOfReadersModel()
+                    {
+                        Id = book.Id,
+                        Name = book.Name,
+                        NumOfReaders = NumOfReaders
+                    });
+            }
+            return booksList.OrderByDescending(b => b.NumOfReaders).ToList();
         }
 
         public void InsertBook(BookModel bookModel)

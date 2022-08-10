@@ -20,4 +20,10 @@
         public int Rate { get; set; }
         public List<string>? ShelfNames { get; set; }
     }
+    public class BookWithNumOfReadersModel
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public int NumOfReaders { get; set; }
+    }
 }

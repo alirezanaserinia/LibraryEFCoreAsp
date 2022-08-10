@@ -18,4 +18,27 @@ namespace BehKhaan.Application.Models
         public string FullName { get; set; }
         public List<string>? ShelfNames { get; set; }
     }
+
+    public class UserWithCountOfBooks
+    {
+        public string UserName { get; set; }
+        public string FullName { get; set; }
+        public int CountOfBooks { get; set; }
+    }
+
+    public class UserWithCountOfReadBooks
+    {
+        public string UserName { get; set; }
+        public string FullName { get; set; }
+        public int CountOfReadBooks { get; set; }
+    }
+
+    public class UserStudyState
+    {
+        public string UserName { get; set; }
+        public string FullName { get; set; }
+        public int CountOfReadBooks { get; set; }
+        public int CountOfReadingBooks { get; set; }
+        public int CountOfFutureStudyBooks { get; set; }
+    }
 }

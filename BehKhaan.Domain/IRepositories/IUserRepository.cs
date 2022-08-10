@@ -14,5 +14,6 @@ namespace BehKhaan.Domain.IRepositories
         public void Insert(User entity);
         public void Edit(User entity);
         public void Remove(string id);
+        public bool isUserNameExists(string userName);
     }
 }

@@ -13,7 +13,7 @@ namespace BehKhaan.Application.Interfaces
         public IEnumerable<Shelf> GetShelfs();
         public Shelf GetShelfById(string id);
         public void InsertShelfForUser(ShelfModel shelfModel);
-        public void EditShelf(string id, ShelfModel shelfModel);
+        public void EditShelf(string id, string newShelfName);
         public void RemoveShelf(string id);
     }
 }
